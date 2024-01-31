@@ -83,8 +83,8 @@ function App() {
     const onClear = useCallback(() => {
         chrome.storage.local
             .remove(CHROME_DATA)
-            .then(() => reset({ data: [] }));
-    }, [reset]);
+            .then(() => reset({ data: [], template: getValues('template') }));
+    }, [getValues, reset]);
 
     const onSort = useCallback(() => {
         const values = getValues('data');
@@ -167,7 +167,7 @@ function App() {
                     <FormInput name='template' />
                     <div className='grid gap-2'>
                         {fields?.map((item, index) => (
-                            <div className='relative grid gap-2 '>
+                            <div key={item.id} className='relative grid gap-2 '>
                                 <Button
                                     className='absolute top-2 right-2'
                                     variant='link'
