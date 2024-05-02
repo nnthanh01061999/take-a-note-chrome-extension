@@ -45,7 +45,7 @@ function App() {
 
     const { fields, remove } = useFieldArray<FormFields>({
         name: 'data',
-        control: control,
+        control,
     });
 
     const loadLocalStorage = useCallback(() => {
@@ -64,7 +64,7 @@ function App() {
                         const parseData = data ? JSON.parse(data) : [];
                         reset({
                             data: parseData,
-                            template: template,
+                            template,
                         });
                     });
             }
@@ -81,6 +81,8 @@ function App() {
     }, [getValues]);
 
     const onClear = useCallback(() => {
+        const clear = window.confirm('Do you want to clear?');
+        if (!clear) return;
         chrome.storage.local
             .remove(CHROME_DATA)
             .then(() => reset({ data: [], template: getValues('template') }));
@@ -131,7 +133,16 @@ function App() {
             <div className='p-2 w-[632px] h-[584px]'>
                 <div className='grid gap-2'>
                     <div className='flex space-x-2'>
-                        <Button onClick={onClear}>Clear</Button>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button>Clear</Button>
+                            </PopoverTrigger>
+                            <PopoverContent className='w-fit'>
+                                <div className='grid gap-2 grid-flow-col justify-start'>
+                                    <Button onClick={onClear}>Clear</Button>
+                                </div>
+                            </PopoverContent>
+                        </Popover>
                         <Button onClick={onSort}>Sort</Button>
                         <Button onClick={onGroup}>Group</Button>
                         <Button onClick={onSave}>Save</Button>

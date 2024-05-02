@@ -2,8 +2,7 @@ import { CHROME_DATA } from '@/constants';
 import { ChromeActionEnum, ChromeMessage } from '@/types';
 
 const actions = {
-    CTX_MENU_COLLECT_SELECTED: ({ data, callback }) => {
-        console.log('🚀 ~ data:', data);
+    CTX_MENU_COLLECT_SELECTED: ({ data }) => {
         chrome.storage.local.get(CHROME_DATA).then((result) => {
             const chromeData = result?.[CHROME_DATA] || '';
             const dataParse = chromeData ? JSON.parse(chromeData) : [];
